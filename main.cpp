@@ -18,6 +18,10 @@ int main()
     stdio_init_all();
     while (true)
     {
+        char read = ' ';
+        read = getchar_timeout_us(0);
+        
+        screen.set({2,0}, read);
         screen.set({0,0}, i+'0');
         screen.setString({3,2}, "Bonjour UwU");
         screen.setImage({5,5}, testImage);
