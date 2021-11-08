@@ -7,11 +7,11 @@ int main()
 {
     unsigned char i=0;
     
-    Image testImage({2,2});
-    testImage.set({0,0}, 219);//201
-    testImage.set({1,0}, 219);//187
-    testImage.set({0,1}, 219);//200
-    testImage.set({1,1}, 219);//188
+    CharBuffer testBuffer({2,2});
+    testBuffer.set({0,0}, 219);//201
+    testBuffer.set({1,0}, 219);//187
+    testBuffer.set({0,1}, 219);//200
+    testBuffer.set({1,1}, 219);//188
     
     Screen screen({20,20});
     
@@ -24,7 +24,7 @@ int main()
         screen.set({2,0}, read);
         screen.set({0,0}, i+'0');
         screen.setString({3,2}, "Bonjour UwU");
-        screen.setImage({5,5}, testImage);
+        screen.setBuffer({5,5}, testBuffer);
         
         if (++i > 9)
         {
