@@ -15,7 +15,11 @@ struct Position
     int _x;
     int _y;
     
+    Position operator-(const Position& r);
     Position operator+(const Position& r);
+
+    bool operator==(const Position& r);
+    bool operator!=(const Position& r);
 };
 
 class CharBuffer

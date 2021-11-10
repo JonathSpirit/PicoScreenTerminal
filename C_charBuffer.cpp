@@ -2,9 +2,22 @@
 
 ///Position
 
+Position Position::operator-(const Position& r)
+{
+    return {this->_x - r._x, this->_y - r._y};
+}
 Position Position::operator+(const Position& r)
 {
     return {this->_x + r._x, this->_y + r._y};
+}
+
+bool Position::operator==(const Position& r)
+{
+    return this->_x==r._x && this->_y == r._y;
+}
+bool Position::operator!=(const Position& r)
+{
+    return this->_x!=r._x || this->_y != r._y;
 }
 
 ///CharBuffer
