@@ -62,31 +62,40 @@ int main()
         //Get new snake position
         Position snakeNewPos = snake.front() + snakeDirection;
 
-        if (snakeNewPos._x <= 1)
+        if (snakeNewPos._x <= 0)
         {
             snakeNewPos._x = screen.getSize()._w-2;
         }
-        if (snakeNewPos._y <= 1)
+        if (snakeNewPos._y <= 0)
         {
             snakeNewPos._y = screen.getSize()._h-2;
         }
-        if (snakeNewPos._x >= screen.getSize()._w-2)
+        if (snakeNewPos._x >= screen.getSize()._w-1)
         {
-            snakeNewPos._x = 2;
+            snakeNewPos._x = 1;
         }
-        if (snakeNewPos._y >= screen.getSize()._h-2)
+        if (snakeNewPos._y >= screen.getSize()._h-1)
         {
-            snakeNewPos._y = 2;
+            snakeNewPos._y = 1;
         }
 
         //Shiffting
-        for (std::size_t i=1; i<snake.size(); ++i)
+        for (std::size_t i=snake.size()-1; i>0; --i)
         {
             snake[i] = snake[i-1];
         }
 
         //Apply new pos
         snake.front() = snakeNewPos;
+
+        //Check for game over
+        for (std::size_t i=1; i<snake.size(); ++i)
+        {
+            if (snake.front() == snake[i])
+            {
+                return 0;
+            }
+        }
 
         //Check bonus
         if (snake.front() == bonus)
@@ -95,16 +104,19 @@ int main()
             bonus = {getRandomInt(3, screen.getSize()._w-3), getRandomInt(3, screen.getSize()._h-3)};
         }
 
-        //Draw snake
         screen.clear();
-        
+
+        //Draw arena
+        screen.setBuffer({0,0}, arena);
+
+        //Draw snake
         for (std::size_t i=0; i<snake.size(); ++i)
         {
-            screen.set(snake[i], 254);
+            screen.set(snake[i], '+');
         }
 
         //Draw bonus
-        screen.set(bonus, 232);
+        screen.set(bonus, '&');
 
         //Draw
 
