@@ -94,6 +94,8 @@ int main()
         {
             if (snake.front() == snake[i])
             {
+                screen.setString({0, 19}, "Score: GAME OVER");
+                screen.draw();
                 return 0;
             }
         }
