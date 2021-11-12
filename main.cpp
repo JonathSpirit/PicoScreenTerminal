@@ -11,7 +11,7 @@ int getRandomInt(int lower, int upper)
 
 int main()
 {
-    srand( get_absolute_time() );
+    srand( get_absolute_time()._private_us_since_boot );
 
     Position snakeDirection = {1,0};
     std::vector<Position> snake;
