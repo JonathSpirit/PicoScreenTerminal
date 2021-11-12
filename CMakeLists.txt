@@ -13,6 +13,7 @@ pico_sdk_init()
 add_executable(myPicoTest
     main.cpp
     C_screen.cpp
+    C_charBuffer.cpp
 )
 
 # Add pico_stdlib library which aggregates commonly used features
