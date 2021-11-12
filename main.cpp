@@ -17,6 +17,7 @@ int main()
     std::vector<Position> snake;
     snake.reserve(30);
     snake.push_back({3,3});
+    int nbBonusCollected = 0;
     
     CharBuffer arena({20,20});
     for (int y=0; y<20; ++y)
@@ -102,6 +103,7 @@ int main()
         {
             snake.push_back(snake.back());
             bonus = {getRandomInt(3, screen.getSize()._w-3), getRandomInt(3, screen.getSize()._h-3)};
+            nbBonusCollected++;
         }
 
         screen.clear();
@@ -118,6 +120,7 @@ int main()
         //Draw bonus
         screen.set(bonus, '&');
 
+        screen.setString({0,19}, "Score: " + std::to_string(nbBonusCollected)+" ");
         //Draw
 
         screen.setString({3,0}, "The snake");
