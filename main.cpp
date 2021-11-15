@@ -11,7 +11,7 @@ int getRandomInt(int lower, int upper)
 
 int main()
 {
-    srand( get_absolute_time()._private_us_since_boot );
+    srand( to_us_since_boot(get_absolute_time()) );
 
     Position snakeDirection = {1,0};
     std::vector<Position> snake;
@@ -45,16 +45,28 @@ int main()
         switch (read)
         {
         case 'w':
-            snakeDirection = {0,-1};
+            if (snakeDirection != (Position){0,1})
+            {
+                snakeDirection = (Position){0,-1};
+            }
             break;
         case 'a':
-            snakeDirection = {-1,0};
+            if (snakeDirection != (Position){1,0})
+            {
+                snakeDirection = {-1,0};
+            }
             break;
         case 's':
-            snakeDirection = {0,1};
+            if (snakeDirection != (Position){0,-1})
+            {
+                snakeDirection = {0,1};
+            }
             break;
         case 'd':
-            snakeDirection = {1,0};
+            if (snakeDirection != (Position){-1,0})
+            {
+                snakeDirection = {1,0};
+            }
             break;
         default:
             break;
