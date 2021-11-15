@@ -11,12 +11,13 @@ int getRandomInt(int lower, int upper)
 
 int main()
 {
-    srand( get_absolute_time() );
+    srand( to_us_since_boot(get_absolute_time()) );
 
     Position snakeDirection = {1,0};
     std::vector<Position> snake;
     snake.reserve(30);
     snake.push_back({3,3});
+    int nbBonusCollected = 0;
     
     CharBuffer arena({20,20});
     for (int y=0; y<20; ++y)
@@ -44,16 +45,28 @@ int main()
         switch (read)
         {
         case 'w':
-            snakeDirection = {0,-1};
+            if (snakeDirection != (Position){0,1})
+            {
+                snakeDirection = (Position){0,-1};
+            }
             break;
         case 'a':
-            snakeDirection = {-1,0};
+            if (snakeDirection != (Position){1,0})
+            {
+                snakeDirection = {-1,0};
+            }
             break;
         case 's':
-            snakeDirection = {0,1};
+            if (snakeDirection != (Position){0,-1})
+            {
+                snakeDirection = {0,1};
+            }
             break;
         case 'd':
-            snakeDirection = {1,0};
+            if (snakeDirection != (Position){-1,0})
+            {
+                snakeDirection = {1,0};
+            }
             break;
         default:
             break;
@@ -93,6 +106,8 @@ int main()
         {
             if (snake.front() == snake[i])
             {
+                screen.setString({0, 19}, "Score: GAME OVER");
+                screen.draw();
                 return 0;
             }
         }
@@ -102,6 +117,7 @@ int main()
         {
             snake.push_back(snake.back());
             bonus = {getRandomInt(3, screen.getSize()._w-3), getRandomInt(3, screen.getSize()._h-3)};
+            nbBonusCollected++;
         }
 
         screen.clear();
@@ -118,6 +134,7 @@ int main()
         //Draw bonus
         screen.set(bonus, '&');
 
+        screen.setString({0,19}, "Score: " + std::to_string(nbBonusCollected)+" ");
         //Draw
 
         screen.setString({3,0}, "The snake");
