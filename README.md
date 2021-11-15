@@ -15,3 +15,8 @@ cmake .. -DPICO_SDK_PATH="(YOUR PATH TO THE PICO-SDK)\pico-sdk"
 ## The demo
 For demonstration purpose, a snake as been made to be played when pluging the pico RP2040.
 You need a software that enable communication with the RP2040 like *Tera Term* for Windows.
+
+You can use the following command in the *terminal* on Mac (use Tab to complete the usbmodem number) :
+```
+screen /dev/tty.usbmodem(something)
+```
