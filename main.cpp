@@ -2,6 +2,7 @@
 #include <vector>
 #include "pico/stdlib.h"
 #include "pico/time.h"
+#include "hardware/watchdog.h"
 #include "C_screen.hpp"
 
 int getRandomInt(int lower, int upper)
@@ -108,7 +109,10 @@ int main()
             {
                 screen.setString({0, 19}, "Score: GAME OVER");
                 screen.draw();
-                return 0;
+                sleep_ms(2000);
+                
+                //RESET
+                watchdog_reboot(0, SRAM_END, 10);
             }
         }
 
