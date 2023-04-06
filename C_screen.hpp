@@ -6,12 +6,12 @@
 class Screen : public CharBuffer
 {
 public:
-    Screen(const Size& size);
+    explicit Screen(Size size);
     ~Screen() = default;
     
     void draw();
 
-    void setPositionOffset(const Position& offset);
+    void setPositionOffset(Position offset);
     const Position& getPositionOffset() const;
 
 private:

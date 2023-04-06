@@ -1,11 +1,10 @@
 #include "C_screen.hpp"
 #include <iostream>
 
-Screen::Screen(const Size& size) :
+Screen::Screen(Size size) :
         CharBuffer(size),
         g_offset({0,0})
-{
-}
+{}
 
 void Screen::draw()
 {
@@ -20,7 +19,7 @@ void Screen::draw()
     std::cout << "\e[1;1H";
 }
 
-void Screen::setPositionOffset(const Position& offset)
+void Screen::setPositionOffset(Position offset)
 {
     this->g_offset = offset;
 }
