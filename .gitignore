@@ -1,4 +1,6 @@
 build/
+cmake-build*/
 .vscode/
+.idea/
 pico_sdk_import.cmake
 .DS_Store
