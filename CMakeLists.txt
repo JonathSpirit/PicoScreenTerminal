@@ -4,23 +4,23 @@ cmake_minimum_required(VERSION 3.13)
 # note: this must happen before project()
 include(pico_sdk_import.cmake)
 
-project(myPicoTest CXX C ASM)
+project(picoScreenTerminal CXX C ASM)
 
 # initialize the Raspberry Pi Pico SDK
 pico_sdk_init()
 
-# rest of your project
-add_executable(myPicoTest
-    main.cpp
+add_library(${PROJECT_NAME}
     C_screen.cpp
     C_charBuffer.cpp
 )
 
-# Add pico_stdlib library which aggregates commonly used features
-target_link_libraries(myPicoTest pico_stdlib)
+add_executable(exampleSnake
+    main.cpp
+)
 
-# create map/bin/hex/uf2 file in addition to ELF.
-pico_add_extra_outputs(myPicoTest)
+target_link_libraries(${PROJECT_NAME} pico_stdlib)
+target_link_libraries(exampleSnake ${PROJECT_NAME})
 
-pico_enable_stdio_usb(myPicoTest 1)
-pico_enable_stdio_uart(myPicoTest 0)
+pico_add_extra_outputs(exampleSnake)
+pico_enable_stdio_usb(exampleSnake 1)
+pico_enable_stdio_uart(exampleSnake 0)
