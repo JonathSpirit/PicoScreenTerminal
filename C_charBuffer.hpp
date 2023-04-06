@@ -15,40 +15,41 @@ struct Position
     int _x;
     int _y;
     
-    Position operator-(const Position& r);
-    Position operator+(const Position& r);
+    Position operator-(const Position& r) const;
+    Position operator+(const Position& r) const;
 
-    bool operator==(const Position& r);
-    bool operator!=(const Position& r);
+    bool operator==(const Position& r) const;
+    bool operator!=(const Position& r) const;
 };
 
 class CharBuffer
 {
 public:
     CharBuffer();
-    CharBuffer(const Size& size);
+    explicit CharBuffer(const Size& size);
     CharBuffer(const CharBuffer& r) = default;
-    CharBuffer(CharBuffer&& r);
+    CharBuffer(CharBuffer&& r) noexcept;
     ~CharBuffer() = default;
 
     CharBuffer& operator= (const CharBuffer& r) = default;
-    CharBuffer& operator= (CharBuffer&& r);
+    CharBuffer& operator= (CharBuffer&& r) noexcept;
     
-    void create(const Size& size, char defaultValue=' ');
+    void create(Size size, char defaultValue=' ');
     void clear(char value=' ');
 
     const Size& getSize() const;
 
-    void set(const Position& pos, char value);
+    void set(Position pos, char value);
     void setString(Position pos, const char* value);
     void setString(Position pos, const std::string& value);
     void setBuffer(Position pos, const CharBuffer& value);
+    void setRectangle(Position pos, Size size, char fillValue=' ', unsigned int borderSize=0, char borderValue=' ');
 
-    char get(const Position& pos) const;
+    char get(Position pos) const;
     
 private:
     Size g_size;
-    std::vector<std::vector<char> > g_buffer;
+    std::vector<char> g_buffer;
 };
 
 #endif //_C_CHARBUFFER_HPP_INCLUDED_

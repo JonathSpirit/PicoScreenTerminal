@@ -2,20 +2,20 @@
 
 ///Position
 
-Position Position::operator-(const Position& r)
+Position Position::operator-(const Position& r) const
 {
     return {this->_x - r._x, this->_y - r._y};
 }
-Position Position::operator+(const Position& r)
+Position Position::operator+(const Position& r) const
 {
     return {this->_x + r._x, this->_y + r._y};
 }
 
-bool Position::operator==(const Position& r)
+bool Position::operator==(const Position& r) const
 {
     return this->_x==r._x && this->_y == r._y;
 }
-bool Position::operator!=(const Position& r)
+bool Position::operator!=(const Position& r) const
 {
     return this->_x!=r._x || this->_y != r._y;
 }
@@ -23,47 +23,44 @@ bool Position::operator!=(const Position& r)
 ///CharBuffer
 
 CharBuffer::CharBuffer() :
-        g_size({1,1})
-{
-    this->create(this->g_size);
-}
+        g_size({0,0})
+{}
 CharBuffer::CharBuffer(const Size& size) :
         g_size(size)
 {
     this->create(size);
 }
-CharBuffer::CharBuffer(CharBuffer&& r) :
+CharBuffer::CharBuffer(CharBuffer&& r) noexcept :
     g_size(r.g_size),
     g_buffer(std::move(r.g_buffer))
 {
-    r.create({1,1});
+    r.g_size = {0,0};
 }
 
-CharBuffer& CharBuffer::operator= (CharBuffer&& r)
+CharBuffer& CharBuffer::operator= (CharBuffer&& r) noexcept
 {
     this->g_size = r.g_size;
     this->g_buffer = std::move(r.g_buffer);
-    r.create({1,1});
+    r.g_size = {0,0};
     return *this;
 }
 
-void CharBuffer::create(const Size& size, char defaultValue)
+void CharBuffer::create(Size size, char defaultValue)
 {
     this->g_size = size;
-    this->g_buffer.resize(size._h);
-    for (std::size_t i=0; i<size._h; ++i)
+    if (size._w == 0 || size._h == 0)
     {
-        this->g_buffer[i].resize(size._w, defaultValue);
+        this->g_size = {0,0};
     }
+
+    this->g_buffer.clear();
+    this->g_buffer.resize(size._w * size._h, defaultValue);
 }
 void CharBuffer::clear(char value)
 {
-    for (std::size_t y=0; y<this->g_size._h; ++y)
+    for (char& c : this->g_buffer)
     {
-        for (std::size_t x=0; x<this->g_size._w; ++x)
-        {
-            this->g_buffer[y][x] = value;
-        }
+        c = value;
     }
 }
 
@@ -72,11 +69,11 @@ const Size& CharBuffer::getSize() const
     return this->g_size;
 }
 
-void CharBuffer::set(const Position& pos, char value)
+void CharBuffer::set(Position pos, char value)
 {
     if (pos._x>=0 && pos._x<this->g_size._w && pos._y>=0 && pos._y<this->g_size._h)
     {
-        this->g_buffer[pos._y][pos._x] = value;
+        this->g_buffer[pos._x + pos._y*this->g_size._w] = value;
     }
 }
 void CharBuffer::setString(Position pos, const char* value)
@@ -90,9 +87,9 @@ void CharBuffer::setString(Position pos, const char* value)
 }
 void CharBuffer::setString(Position pos, const std::string& value)
 {
-    for (std::size_t i=0; i<value.size(); ++i)
+    for (char c : value)
     {
-        this->set(pos, value[i]);
+        this->set(pos, c);
         ++pos._x;
     }
 }
@@ -107,11 +104,29 @@ void CharBuffer::setBuffer(Position pos, const CharBuffer& value)
     }
 }
 
-char CharBuffer::get(const Position& pos) const
+void CharBuffer::setRectangle(Position pos, Size size, char fillValue, unsigned int borderSize, char borderValue)
+{
+    for (int y=0; y<size._h; ++y)
+    {
+        for (int x=0; x<size._w; ++x)
+        {
+            if (x<borderSize || x>=size._w-borderSize || y<borderSize || y>=size._h-borderSize)
+            {
+                this->set(pos + Position{x,y}, borderValue);
+            }
+            else
+            {
+                this->set(pos + Position{x,y}, fillValue);
+            }
+        }
+    }
+}
+
+char CharBuffer::get(Position pos) const
 {
     if (pos._x>=0 && pos._x<this->g_size._w && pos._y>=0 && pos._y<this->g_size._h)
     {
-        return this->g_buffer[pos._y][pos._x];
+        return this->g_buffer[pos._x + pos._y*this->g_size._w];
     }
-    return 0;
+    return '\0';
 }
