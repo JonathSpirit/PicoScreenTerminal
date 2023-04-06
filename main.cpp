@@ -21,17 +21,8 @@ int main()
     int nbBonusCollected = 0;
     
     CharBuffer arena({20,20});
-    for (int y=0; y<20; ++y)
-    {
-        for (int x=0; x<20; ++x)
-        {
-            if (y==0 || x==0 || y==19 || x==19)
-            {
-                arena.set({x,y}, '*');
-            }
-        }
-    }
-    
+    arena.setRectangle({0,0}, {20,20}, ' ', 1, '*');
+
     Screen screen({20,20});
 
     Position bonus = {getRandomInt(3, screen.getSize()._w-3), getRandomInt(3, screen.getSize()._h-3)};
